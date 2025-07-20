@@ -1,7 +1,4 @@
-# This workflow will build a golang project
-# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-go
-
-name: Go
+name: Go CI
 
 on:
   push:
@@ -10,19 +7,56 @@ on:
     branches: [ "main" ]
 
 jobs:
-
-  build:
+  build-and-test:
     runs-on: ubuntu-latest
+
     steps:
-    - uses: actions/checkout@v4
+      # Step 1: Checkout code
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-    - name: Set up Go
-      uses: actions/setup-go@v4
-      with:
-        go-version: '1.20'
+      # Step 2: Set up Go
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.20'  # Match your project's Go version
 
-    - name: Build
-      run: go build -v ./...
+      # Step 3: Cache Go modules (for faster builds)
+      - name: Cache Go modules
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/go/pkg/mod
+            ~/.cache/go-build
+          key: ${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
+          restore-keys: |
+            ${{ runner.os }}-go-
 
-    - name: Test
-      run: go test -v ./...
+      # Step 4: Install dependencies
+      - name: Install dependencies
+        run: go mod tidy
+
+      # Step 5: Build project
+      - name: Build
+        run: go build -v ./...
+
+      # Step 6: Install golangci-lint (for code quality checks)
+      - name: Install golangci-lint
+        run: |
+          curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh \
+            | sh -s -- -b $(go env GOPATH)/bin v1.58.0
+
+      # Step 7: Run lint checks
+      - name: Run lint checks
+        run: golangci-lint run ./...
+
+      # Step 8: Run tests with coverage
+      - name: Run tests with coverage
+        run: go test -v -coverprofile=coverage.out ./...
+
+      # Step 9: Upload coverage report as an artifact
+      - name: Upload coverage report
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-report
+          path: coverage.out
