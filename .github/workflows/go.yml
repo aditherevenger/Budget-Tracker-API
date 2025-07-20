@@ -19,7 +19,7 @@ jobs:
       - name: Set up Go
         uses: actions/setup-go@v5
         with:
-          go-version: '1.20'  # Match your project's Go version
+          go-version: '1.24'  # Match your project's Go version
 
       # Step 3: Cache Go modules (for faster builds)
       - name: Cache Go modules
