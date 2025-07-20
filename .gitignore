@@ -1,0 +1,43 @@
+# ----------------------------------
+# Go build artifacts
+# ----------------------------------
+bin/
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+*.test
+*.out
+
+# Go coverage reports
+coverage.out
+
+# Dependency directories
+vendor/
+
+# ----------------------------------
+# IDE / Editor files
+# ----------------------------------
+.idea/
+.vscode/
+*.iml
+
+# JetBrains project files
+out/
+
+# ----------------------------------
+# OS-generated files
+# ----------------------------------
+.DS_Store
+Thumbs.db
+
+# Logs & temp files
+*.log
+*.swp
+*.tmp
+
+# ----------------------------------
+# Local environment files
+# ----------------------------------
+.env
