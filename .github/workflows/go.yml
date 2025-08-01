@@ -19,7 +19,7 @@ jobs:
       - name: Set up Go
         uses: actions/setup-go@v5
         with:
-          go-version: '1.24'  # Match your project's Go version
+          go-version: '1.22'  # Match your project's Go version
 
       # Step 3: Cache Go modules (for faster builds)
       - name: Cache Go modules
@@ -48,7 +48,7 @@ jobs:
 
       # Step 7: Run lint checks
       - name: Run lint checks
-        run: golangci-lint run ./...
+        run: golangci-lint run --timeout=5m --out-format=github-actions ./...
 
       # Step 8: Run tests with coverage
       - name: Run tests with coverage
