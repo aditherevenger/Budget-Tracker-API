@@ -38,7 +38,7 @@ jobs:
 
       # Step 5: Build project
       - name: Build
-        run: go build -v ./...
+        run: go build -v -o budget-tracker ./cmd/budget-tracker
 
       # Step 6: Install golangci-lint (for code quality checks)
       - name: Install golangci-lint
