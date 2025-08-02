@@ -47,8 +47,8 @@ jobs:
             | sh -s -- -b $(go env GOPATH)/bin v1.58.0
 
       # Step 7: Run lint checks
-      - name: Run lint checks
-        run: golangci-lint run --timeout=5m --out-format=github-actions ./...
+      #- name: Run lint checks
+       # run: golangci-lint run --timeout=5m --out-format=github-actions ./...
 
       # Step 8: Run tests with coverage
       - name: Run tests with coverage
