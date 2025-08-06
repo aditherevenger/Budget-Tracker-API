@@ -57,7 +57,7 @@ func (ac *AuthController) Login(c *gin.Context) {
 }
 
 func (ac *AuthController) GetProfile(c *gin.Context) {
-	userIDStr, exists := c.Get("userID")
+	userIDStr, exists := c.Get("user_id")
 	if !exists {
 		c.JSON(http.StatusUnauthorized, gin.H{"error": "User not authenticated"})
 		return
