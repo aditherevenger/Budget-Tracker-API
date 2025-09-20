@@ -105,7 +105,7 @@ Create .env in the project root:
 DB_HOST=localhost
 DB_PORT=5432
 DB_USER=postgres
-DB_PASSWORD=AdiKal@1505
+DB_PASSWORD=Password@123
 DB_NAME=budget_tracker
 DB_SSLMODE=disable
 
