@@ -90,7 +90,7 @@ go mod tidy
 ```bash
 CREATE DATABASE budget_tracker;
 -- If you want a custom user (optional)
-CREATE USER postgres WITH PASSWORD 'AdiKal@1505';
+CREATE USER postgres WITH PASSWORD 'Password@123';
 ALTER ROLE postgres SUPERUSER;
 GRANT ALL PRIVILEGES ON DATABASE budget_tracker TO postgres;
 ```
