@@ -1,6 +1,7 @@
 package middleware
 
 import (
+	"fmt"
 	"net/http"
 	"strings"
 
@@ -30,6 +31,8 @@ func AuthMiddleware() gin.HandlerFunc {
 			c.Abort()
 			return
 		}
+
+		fmt.Printf("Set user_id in context: value=%v, type=%T\n", claims.UserID, claims.UserID)
 
 		c.Set("user_id", claims.UserID)
 		c.Set("user_email", claims.Email)

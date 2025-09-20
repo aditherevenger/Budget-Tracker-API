@@ -71,32 +71,37 @@ func (r *transactionRepository) Delete(id uint, userID uint) error {
 }
 
 func (r *transactionRepository) GetSummary(userID uint, startDate, endDate string) (map[string]interface{}, error) {
-	var result struct {
-		TotalIncome  float64
-		TotalExpense float64
-		NetBalance   float64
-	}
-	query := database.DB.Model(&models.Transaction{}).Where("user_id = ?", userID)
-	if startDate != "" {
-		query = query.Where("date >= ?", startDate)
-	}
-	if endDate != "" {
-		query = query.Where("date <= ?", endDate)
-	}
+    // Income
+    incomeQuery := database.DB.Model(&models.Transaction{}).Where("user_id = ? AND type = ?", userID, models.Income)
+    if startDate != "" {
+        incomeQuery = incomeQuery.Where("date >= ?", startDate)
+    }
+    if endDate != "" {
+        incomeQuery = incomeQuery.Where("date <= ?", endDate)
+    }
+    var totalIncome float64
+    if err := incomeQuery.Select("COALESCE(SUM(amount), 0)").Scan(&totalIncome).Error; err != nil {
+        return nil, err
+    }
 
-	err := query.Select(
-		"SUM(CASE WHEN type = 'income' THEN amount ELSE 0 END) as total_income",
-		"SUM(CASE WHEN type = 'expense' THEN amount ELSE 0 END) as total_expense",
-		"SUM(CASE WHEN type = 'income' THEN amount ELSE -amount END) as net_balance",
-	).Scan(&result).Error
+    // Expense
+    expenseQuery := database.DB.Model(&models.Transaction{}).Where("user_id = ? AND type = ?", userID, models.Expense)
+    if startDate != "" {
+        expenseQuery = expenseQuery.Where("date >= ?", startDate)
+    }
+    if endDate != "" {
+        expenseQuery = expenseQuery.Where("date <= ?", endDate)
+    }
+    var totalExpense float64
+    if err := expenseQuery.Select("COALESCE(SUM(amount), 0)").Scan(&totalExpense).Error; err != nil {
+        return nil, err
+    }
 
-	if err != nil {
-		return nil, err
-	}
+    net := totalIncome - totalExpense
 
-	return map[string]interface{}{
-		"total_income":  result.TotalIncome,
-		"total_expense": result.TotalExpense,
-		"net_balance":   result.NetBalance,
-	}, nil
+    return map[string]interface{}{
+        "total_income":  totalIncome,
+        "total_expense": totalExpense,
+        "net_balance":   net,
+    }, nil
 }
