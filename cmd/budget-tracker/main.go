@@ -1,16 +1,18 @@
 package main
 
 import (
+	"log"
+	"net/http"
+	"os"
+
+	"github.com/gin-contrib/cors"
+	"github.com/gin-gonic/gin"
+
 	"github.com/aditherevenger/Budget-Tracker-API/controllers"
 	"github.com/aditherevenger/Budget-Tracker-API/database"
 	"github.com/aditherevenger/Budget-Tracker-API/middleware"
 	"github.com/aditherevenger/Budget-Tracker-API/repository"
 	"github.com/aditherevenger/Budget-Tracker-API/services"
-	"github.com/gin-contrib/cors"
-	"github.com/gin-gonic/gin"
-	"log"
-	"net/http"
-	"os"
 )
 
 func main() {

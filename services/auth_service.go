@@ -2,10 +2,11 @@ package services
 
 import (
 	"errors"
+	"gorm.io/gorm"
+
 	"github.com/aditherevenger/Budget-Tracker-API/models"
 	"github.com/aditherevenger/Budget-Tracker-API/repository"
 	"github.com/aditherevenger/Budget-Tracker-API/utils"
-	"gorm.io/gorm"
 )
 
 type AuthService interface {
